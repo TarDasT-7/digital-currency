@@ -11,7 +11,7 @@
             body{
                 margin:0;
                 padding:0;
-                overflow: hidden;
+                overflow-x: hidden;
             }
             #symbol , #price-box, #price-box2{
                 border: none;
@@ -28,7 +28,7 @@
                 opacity: .8;
             }
             #symbol:focus{
-                width:55%!important;
+                /* width:55%!important; */
             }  
             .submit{
                 padding: 5px 20px;
@@ -56,12 +56,21 @@
             <div class="col-2 "> </div>
             <div class="col-8 ">
                 <div class=" w-75 bg-warning my-5 mx-auto h-75">
-                    <br><p style="text-align: right;padding: 10px;font-size: 20px;">برای دریافت آخرین قیمت ارز دیجیتال مورد نیاز ، لطفا سمبل مورد نظر خود را وارد کنید</p><br>
+                    <!-- <br><p style="text-align: right;padding: 10px;font-size: 20px;">برای دریافت آخرین قیمت ارز دیجیتال مورد نیاز ، لطفا سمبل مورد نظر خود را وارد کنید</p><br> -->
+                    <br><p style="text-align: right;padding: 10px;font-size: 20px;">برای دریافت آخرین قیمت ارز دیجیتال مورد نیاز ، لطفا سمبل مورد نظر خود را انتخاب کنید</p><br>
 
                     <div class="row">
                         
                         <div class="col-12 mx-auto px-4 mb-3" style="text-align:right">
-                            <input class="" style="text-align:center; width:50%" type="text" id="symbol"  placeholder=" ... لطفا نماد مورد نظر خود را وارد کنید">
+                            <!-- <input class="" style="text-align:center; width:50%" type="text" id="symbol"  placeholder=" ... لطفا نماد مورد نظر خود را وارد کنید"> -->
+                            
+                            <select style="text-align:center; width:50%" id="symbol">
+                                <option value="nothing">لطفا سمبل مورد نظر خود را انتخاب</option>
+                                @foreach($symbols as $symbol)
+                                    <option value="{{$symbol}}">{{$symbol}}</option>
+                                @endforeach
+                            </select>
+
                         </div>
                             
                         <div class="col-12 mx-auto px-4  mb-3" style="text-align:right">
@@ -97,9 +106,9 @@
     <script> // دریافت اطلاعات با استفاده از کنترلر
         $('.up').click(function(){
             var symbol = $('#symbol').val();
-            if(symbol.length == 0)
+            if(symbol == 'nothing')
             {
-                alert('کاربر گرامی ، لطفا سمبل مورد نظر را وارد کنید')
+                alert('کاربر گرامی ، لطفا سمبل مورد نظر را انتخاب کنید')
                 $('.up').html('دریافت جدیدترین قیمت')
                 $('#price-result').fadeOut(500);
                 $('#price-result2').fadeOut(400);
@@ -110,10 +119,9 @@
                 $('.up').html('لطفا صبر کنید');
                 $.ajax({
                     type: "GET",
-                    url: "api/getLatestPrice/"+symbol,
+                    url: "api/v1/get/latest/price/"+symbol,
                     data: {symbol:symbol},
                     success: function (response) {
-                        console.log(response);
                         
                         if(response == 404)
                         {
@@ -129,8 +137,6 @@
                             $('#price-result2').fadeIn(500);
                             $('.up').html('به روز رسانی')
                         }
-    
-    
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert('کاربر گرامی ، سمبل وارد شده صحیح نمی باشد. توجه داشته باشید باید از حروف بزرگ انگلیسی استفاده کنید')
@@ -138,10 +144,53 @@
                         $('#price-result').fadeOut(500);
                         $('#price-result2').fadeOut(400);
                     }
-    
                 });
             }
         })
+
+        $('#symbol').change(function(){
+            $('#price-result').fadeOut(500);
+            $('#price-result2').fadeOut(400);
+            var symbol = $('#symbol').val();
+            if(symbol == 'nothing')
+            {
+                // alert('کاربر گرامی ، لطفا سمبل مورد نظر را انتخاب کنید')
+                $('.up').html('دریافت جدیدترین قیمت')
+                $('#price-result').fadeOut(500);
+                $('#price-result2').fadeOut(400);
+
+            }else
+            {   
+                $('.up').html('لطفا صبر کنید');
+                $.ajax({
+                    type: "GET",
+                    url: "api/v1/get/latest/price/"+symbol,
+                    data: {symbol:symbol},
+                    success: function (response) {                        
+                        if(response == 404)
+                        {
+                            alert('کاربر گرامی ، سمبل وارد شده صحیح نمی باشد. توجه داشته باشید باید از حروف بزرگ انگلیسی استفاده کنید')
+                            $('#price-result').fadeOut(500);
+                            $('#price-result2').fadeOut(400);
+                            $('.up').html('دریافت جدیدترین قیمت')
+                        }else
+                        {
+                            $('#price').html(response.price)
+                            $('#price2').html(Math.round(response.price * 100) / 100)
+                            $('#price-result').fadeIn(400);
+                            $('#price-result2').fadeIn(500);
+                            $('.up').html('به روز رسانی')
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('کاربر گرامی ، سمبل وارد شده صحیح نمی باشد. توجه داشته باشید باید از حروف بزرگ انگلیسی استفاده کنید')
+                        $('.up').html('دریافت جدیدترین قیمت')
+                        $('#price-result').fadeOut(500);
+                        $('#price-result2').fadeOut(400);
+                    }
+                });
+            }
+        });
     </script>
 
     <!-- <script> // دریافت اطلاعات به صورت مستقیم از api با استفاده از ajax

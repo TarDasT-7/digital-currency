@@ -19,5 +19,5 @@ use App\Http\Controllers\Controller;
 //     return $request->user();
 // });
 
-Route::get('getLatestPrice/{symbol}' , [Controller::class , 'latestPrice']);
+Route::get('v1/get/latest/price/{symbol}' , [Controller::class , 'latestPrice']);
 

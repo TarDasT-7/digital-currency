@@ -17,7 +17,14 @@ class Controller extends BaseController
     public function index()
     {
         // صفحه اصلی
-        return view('index');
+        $items = Http::get('https://api.binance.com/api/v3/ticker/price');
+        $items = $items->object();
+        $symbols = array();
+        foreach($items as $item)
+        {
+            $symbols[]=$item->symbol;
+        }
+        return view('index' , compact(['symbols']));
     }
 
     public function latestPrice($symbol)
@@ -39,7 +46,7 @@ class Controller extends BaseController
         // دریافت تمامی آیتم ها
         $items = Http::get('https://api.binance.com/api/v3/ticker/price');
         $items = $items->object();
-        // dd($items);
+        // dd($items->json());
         return view('list' , compact('items'));
     }
 }

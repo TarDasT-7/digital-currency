@@ -20,4 +20,4 @@ use App\Http\Controllers\Controller;
 
 Route::get('/' , [Controller::class , 'index'])->name('home');
 Route::get('/allItem' , [Controller::class , 'allItem'])->name('showAllItem');
-// Route::get('/getLatestPrice/{symbol}' , [Controller::class , 'latestPrice']);
+// Route::get('v1/get/latest/price/{symbol}' , [Controller::class , 'latestPrice']);
