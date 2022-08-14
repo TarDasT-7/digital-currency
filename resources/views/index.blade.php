@@ -94,19 +94,23 @@
 
         </div>
 
-    <script>
+    <script> // دریافت اطلاعات با استفاده از کنترلر
         $('.up').click(function(){
             var symbol = $('#symbol').val();
             if(symbol.length == 0)
             {
                 alert('کاربر گرامی ، لطفا سمبل مورد نظر را وارد کنید')
+                $('.up').html('دریافت جدیدترین قیمت')
+                $('#price-result').fadeOut(500);
+                $('#price-result2').fadeOut(400);
 
             }else
-            {
+            {   
+
                 $('.up').html('لطفا صبر کنید');
                 $.ajax({
                     type: "GET",
-                    url: "/getLatestPrice/"+symbol,
+                    url: "api/getLatestPrice/"+symbol,
                     data: {symbol:symbol},
                     success: function (response) {
                         console.log(response);
@@ -114,25 +118,74 @@
                         if(response == 404)
                         {
                             alert('کاربر گرامی ، سمبل وارد شده صحیح نمی باشد')
+                            $('#price-result').fadeOut(500);
+                            $('#price-result2').fadeOut(400);
+                            $('.up').html('دریافت جدیدترین قیمت')
                         }else
                         {
                             $('#price').html(response.price)
                             $('#price2').html(Math.round(response.price * 100) / 100)
                             $('#price-result').fadeIn(400);
                             $('#price-result2').fadeIn(500);
+                            $('.up').html('به روز رسانی')
                         }
     
-                        $('.up').html('به روز رسانی')
     
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
-                        alert('کاربر گرامی ، لطفا سمبل مورد نظر را وارد کنید')
+                        alert('کاربر گرامی ، لطفا سمبل مورد نظر را صحیح وارد کنید')
+                        $('.up').html('دریافت جدیدترین قیمت')
+                        $('#price-result').fadeOut(500);
+                        $('#price-result2').fadeOut(400);
                     }
     
                 });
             }
         })
     </script>
+
+    <!-- <script> // دریافت اطلاعات به صورت مستقیم از api با استفاده از ajax
+            $('.up').click(function(){
+                var symbol = $('#symbol').val();
+                if(symbol.length == 0)
+                {
+                    alert('کاربر گرامی ، لطفا سمبل مورد نظر را وارد کنید')
+                    $('.up').html('دریافت جدیدترین قیمت')
+                    $('#price-result').fadeOut(500);
+                    $('#price-result2').fadeOut(400);
+                }else
+                {   
+                    $('.up').html('لطفا صبر کنید');
+                    const url = 'https://api.binance.com/api/v3/ticker/price?symbol=' + symbol;
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        success: function (response) {
+                            if(response)
+                            {
+                                $('#price').html(response.price)
+                                $('#price2').html(Math.round(response.price * 100) / 100)
+                                $('#price-result').fadeIn(400);
+                                $('#price-result2').fadeIn(500);
+                                $('.up').html('به روز رسانی')
+                            }else
+                            {
+                                alert('کاربر گرامی ، سمبل وارد شده صحیح نمی باشد')
+                                $('#price-result').fadeOut(500);
+                                $('#price-result2').fadeOut(400);
+                                $('.up').html('دریافت جدیدترین قیمت')
+                            }     
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('کاربر گرامی ، لطفا سمبل مورد نظر را صحیح وارد کنید')
+                            $('.up').html('دریافت جدیدترین قیمت')
+                            $('#price-result').fadeOut(500);
+                            $('#price-result2').fadeOut(400);
+                        }
+                    });
+                }
+            })
+    </script> -->
 
     </body>
 </html>

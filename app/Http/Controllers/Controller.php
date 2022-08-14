@@ -27,7 +27,7 @@ class Controller extends BaseController
         
         if($response->successful())
         {           
-            return $response->object();
+            return $response->json();
         }else
         {
             return 404;
@@ -38,7 +38,7 @@ class Controller extends BaseController
     {
         // دریافت تمامی آیتم ها
         $items = Http::get('https://api.binance.com/api/v3/ticker/price');
-        $items = $items->object();
+        $items = $items->json();
         return view('list' , compact('items'));
     }
 }
