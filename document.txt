@@ -1,0 +1,13 @@
+سلام و عرض وقت بخیر خدمت شما
+
+controller :            app/Http/Controllers/Controller.php
+jquery :                public/jquery.min.js
+bootstrap :             public/bootstrap.min.css
+search with symbol :    resources/views/index.blade.php
+list and datatable :    resources/views/list.blade.php
+router :                routes/web.php
+
+در کنترلر سه متد داریم
+متد ایندکس که ویو صفحه ابتدایی را باز میکنه و میتوانید در همان صفحه یک درخواست با ای جکس برای متد گت ارسال کنید
+و اطلاعات مورد نیاز را دریافت کنید
+و اخرین متد ، تمامی ایتم های موجود در بازار را در صفحه لیست ، در قالب جدول داده به شما نمایش میدهد
