@@ -20,25 +20,26 @@ class Controller extends BaseController
         return view('index');
     }
 
-    public function get($name)
+    public function latestPrice($symbol)
     {
         // دریافت اطلاعات بر اساس سمبل توسط ای جکس
-        $response = Http::get('https://api.binance.com/api/v3/ticker/price?symbol='.$name);
+        $response = Http::get('https://api.binance.com/api/v3/ticker/price?symbol='.$symbol);
         
         if($response->successful())
         {           
-            return $response->json();
+            return $response->object();
         }else
         {
             return 404;
         }
     }
 
-    public function all()
+    public function allItem()
     {
         // دریافت تمامی آیتم ها
         $items = Http::get('https://api.binance.com/api/v3/ticker/price');
-        $items = $items->json();
+        $items = $items->object();
+        // dd($items);
         return view('list' , compact('items'));
     }
 }

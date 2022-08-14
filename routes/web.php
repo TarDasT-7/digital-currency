@@ -19,5 +19,5 @@ use App\Http\Controllers\Controller;
 // });
 
 Route::get('/' , [Controller::class , 'index'])->name('home');
-Route::get('/allItem' , [Controller::class , 'all'])->name('showAllItem');
-// Route::get('/getLatestPrice/{name}' , [Controller::class , 'get']);
+Route::get('/allItem' , [Controller::class , 'allItem'])->name('showAllItem');
+// Route::get('/getLatestPrice/{symbol}' , [Controller::class , 'latestPrice']);
